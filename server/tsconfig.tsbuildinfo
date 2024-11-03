@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/controllers/course.controller.ts","./src/controllers/user.controller.ts","./src/database/database.ts","./src/graphql/graphql.ts","./src/graphql/schema/schema.ts","./src/middlewares/error.ts","./src/models/course.model.ts","./src/models/user.model.ts","./src/resolver/resolver.ts","./src/utils/errorhandler.ts"],"version":"5.6.3"}
