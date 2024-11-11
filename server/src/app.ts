@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, RequestHandler, Response } from "express";
 import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.js";
 import morgan from "morgan";
@@ -36,17 +36,21 @@ const DB_URI = process.env.DB_URI as string;
 connectToDb(DB_URI);
 const graphQlServer = connectGraphQl();
 await graphQlServer.start();
-app.use("/graphql", expressMiddleware(graphQlServer));
+const isAdmin: RequestHandler = (req, res, next) => {
+  const user = { role: "Admin" };
+  if (user.role === "Admin") next();
+  else res.status(403).send("You are not an Admin.");
+};
+app.use("/graphql", isAdmin, expressMiddleware(graphQlServer));
 
 // your routes here
 
-// app.get("*", (req, res) => {
-//   res.status(404).json({
-//     success: false,
-//     message: "Page not found",
-//   });
-// });
-// // @ts-ignore
+app.get("*", (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Page not found",
+  });
+});
 // app.use(errorMiddleware);
 
 app.listen(port, () =>
